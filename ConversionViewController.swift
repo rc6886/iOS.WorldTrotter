@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public class ConversionViewController : UIViewController {
+public class ConversionViewController : UIViewController, UITextFieldDelegate {
     @IBOutlet var celsiusLabel: UILabel!
     @IBOutlet var textField: UITextField!
     var farenheitValue: Double? {
@@ -57,6 +57,40 @@ public class ConversionViewController : UIViewController {
             celsiusLabel.text = numberFormatter.stringFromNumber(value)
         } else {
             celsiusLabel.text = "???"
+        }
+    }
+    
+    public func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        print("Current Text: \(textField.text)")
+        print("Replacement Text: \(string)")
+        
+        let existingTextHasDecimalSeparator = textField.text?.rangeOfString(".")
+        let replacementTextHasDecimalSeparator = string.rangeOfString(".")
+        let replacementTextContainsLetters = doesStringContainLetters(string)
+        
+        let shouldReplaceDecimal = existingTextHasDecimalSeparator != nil && replacementTextHasDecimalSeparator != nil
+        
+        if shouldReplaceDecimal || replacementTextContainsLetters {
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    func doesStringContainLetters(value: String?) -> Bool {
+        if let string = value {
+        let letters = NSCharacterSet.letterCharacterSet()
+        let range = string.rangeOfCharacterFromSet(letters)
+        
+        // range will be nil if no letters is found
+        if let _ = range {
+            return true
+        }
+        else {
+            return false
+        }
+        } else {
+            return false
         }
     }
 }

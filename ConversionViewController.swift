@@ -93,4 +93,25 @@ public class ConversionViewController : UIViewController, UITextFieldDelegate {
             return false
         }
     }
+    
+    override public func viewDidLoad() {
+        super.viewDidLoad()
+        print("ConversionViewController loaded its view.")
+    }
+    
+    override public func viewWillAppear(animated: Bool) {
+        
+        if getDateTime() > 7 && getDateTime() < 7 {
+            view.backgroundColor = UIColor.lightGrayColor()
+        } else {
+            view.backgroundColor = UIColor.darkGrayColor()
+        }
+    }
+    
+    func getDateTime() -> Int {
+        let date = NSDate()
+        let calendar = NSCalendar.currentCalendar()
+        let components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+        return components.hour
+    }
 }
